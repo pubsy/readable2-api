@@ -13,7 +13,7 @@ libraryDependencies ++= Seq(
   javaWs,
   "junit" % "junit" % "4.12" % "test",
   "com.googlecode.siren4j" % "siren4j" % "1.1.3",
-  "mysql" % "mysql-connector-java" % "5.1.21"
+  "mysql" % "mysql-connector-java" % "5.1.38"
 )
 
 // Play provides two styles of routers, one expects its actions to be injected, the
