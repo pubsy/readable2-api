@@ -8,10 +8,10 @@ create table books (
   inserted_at               timestamp not null,
   external_id               varchar(255) not null,
   title                     varchar(255) not null,
-  description               clob not null,
+  description               TEXT not null,
   author_name               varchar(255) not null,
-  thumbnail_url             clob(512) not null,
-  small_thumbnail_url       clob(512) not null,
+  thumbnail_url             TEXT not null,
+  small_thumbnail_url       TEXT not null,
   constraint pk_books primary key (id))
 ;
 

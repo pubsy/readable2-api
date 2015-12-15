@@ -7,7 +7,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -20,20 +19,17 @@ public class Book extends BaseModel {
 	
 	@Column(nullable = false)
 	public String title;
-	
-	@Lob
-	@Column(nullable = false)
+
+	@Column(columnDefinition = "TEXT", nullable = false)
 	public String description;
 	
 	@Column(nullable = false)
 	public String authorName;
-	
-	@Lob
-	@Column(nullable = false, length=512)
+
+	@Column(columnDefinition = "TEXT", nullable = false, length=512)
 	public String thumbnailUrl;
 
-	@Lob
-	@Column(nullable = false, length=512)
+	@Column(columnDefinition = "TEXT", nullable = false, length=512)
 	public String smallThumbnailUrl;
 	
 	@OneToMany(mappedBy = "book", cascade=CascadeType.REMOVE, fetch=FetchType.EAGER)
