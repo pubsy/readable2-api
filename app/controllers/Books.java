@@ -14,7 +14,6 @@ public class Books extends BaseController {
     @Inject
     private BooksService booksService;
 
-
     public Result books() {
         BooksListResource booksListResource = new BooksListResource();
         booksListResource.books = new CollectionResource<BookResource>();
@@ -24,8 +23,7 @@ public class Books extends BaseController {
         booksListResource.books.setTotal(getBooksTotal());
 
         addGenericControls(booksListResource);
-
-        return ok(serializeResource(booksListResource));
+        return ok(serializeResource(booksListResource)).as("application/vnd.siren+json");
     }
 
     private List<BookResource> getBooksList(int limit, int offset) {
@@ -34,5 +32,9 @@ public class Books extends BaseController {
 
     private long getBooksTotal() {
         return booksService.getBooksTotal();
+    }
+
+    public void setBooksService(BooksService booksService){
+        this.booksService  = booksService;
     }
 }

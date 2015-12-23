@@ -1,5 +1,6 @@
 package resources;
 
+import com.google.code.siren4j.annotations.Siren4JAction;
 import com.google.code.siren4j.annotations.Siren4JEntity;
 import com.google.code.siren4j.annotations.Siren4JLink;
 import com.google.code.siren4j.annotations.Siren4JSubEntity;
@@ -15,6 +16,9 @@ import models.User;
 @Siren4JEntity(name = "root", uri = "/",
 		links = {
 				@Siren4JLink(rel = "search", href = "/books-search", title = "Search")
+		},
+		actions = {
+				@Siren4JAction(href = "/register", name = "register")
 		}
 )
 public class BooksListResource extends BaseResource{
