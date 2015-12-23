@@ -9,21 +9,21 @@ public class BooksRoutesTest extends WithServer {
 
     @Test
     public void testBooksListOffset() {
-        int actualOffset = Json.parse(getResponseBody("http://localhost:9000/?offset=2&limit=3")).get("properties").get("offset").intValue();
+        int actualOffset = Json.parse(getResponseBody("/?offset=2&limit=3")).get("properties").get("offset").intValue();
 
         assertEquals(2, actualOffset);
     }
 
     @Test
     public void testBooksListLimit() {
-        int actualLimit = Json.parse(getResponseBody("http://localhost:9000/?offset=0&limit=5")).get("properties").get("limit").intValue();
+        int actualLimit = Json.parse(getResponseBody("/?offset=0&limit=5")).get("properties").get("limit").intValue();
 
         assertEquals(5, actualLimit);
     }
 
     @Test
     public void testBooksListDefaultParamValues() {
-        String responseBody = getResponseBody("http://localhost:9000/");
+        String responseBody = getResponseBody("/");
         int actualOffset = Json.parse(responseBody).get("properties").get("offset").intValue();
         int actualLimit = Json.parse(responseBody).get("properties").get("limit").intValue();
 
@@ -32,6 +32,6 @@ public class BooksRoutesTest extends WithServer {
     }
 
     private String getResponseBody(String url) {
-        return WS.url(url).get().get(5000).getBody();
+        return WS.url("http://localhost:" + this.testServer.port() + url).get().get(5000).getBody();
     }
 }
