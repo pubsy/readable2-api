@@ -25,6 +25,8 @@ import java.util.stream.StreamSupport;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static play.mvc.Http.Status.OK;
 import static play.test.Helpers.contentAsString;
@@ -102,13 +104,41 @@ public class BooksControllerTest extends WithApplication {
         assertEquals(5, actualTotal);
     }
 
+    @Test
+    public void testBooksListItemsSize() {
+        prepareBooksService(3, 6, 9);
+
+        int actualSize = Json.parse(contentAsString(books.books(3, 6))).get("entities").size();
+
+        assertEquals(6, actualSize);
+    }
+
+    @Test
+    public void testBooksServiceCall(){
+        prepareBooksService(3, 6, 9);
+
+        books.books(3, 6);
+
+        verify(booksService, times(1)).getBooksList(3, 6);
+        verify(booksService, times(1)).getBooksTotal();
+    }
+
+    @Test
+    public void testBooksListItemsClass() {
+        prepareBooksService(0, 3, 9);
+
+        String entityItemClass = Json.parse(contentAsString(books.books(0, 3))).get("entities").get(0).get("class").get(0).asText();
+
+        assertEquals("book", entityItemClass);
+    }
+
     private void prepareBooksService(int offset, int limit, int total) {
         ArrayList<BookResource> bookResources = new ArrayList<>();
 
         for (int i = 0; i < limit; i++) {
             bookResources.add(new BookResource(new Book()));
         }
-        when(booksService.getBooksList(0, limit)).thenReturn(bookResources);
+        when(booksService.getBooksList(offset, limit)).thenReturn(bookResources);
         when(booksService.getBooksTotal()).thenReturn(total);
     }
 
