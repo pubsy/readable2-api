@@ -20,7 +20,7 @@ public class BooksService {
                 }
             };
 
-    public List<BookResource> getBooksList(int limit, int offset) {
+    public List<BookResource> getBooksList(int offset, int limit) {
         //Book.find("order by insertedAt asc").fetch(page + 1, size);
 
         List<Book> books = new ArrayList<Book>();

@@ -1,8 +1,10 @@
 package controllers;
 
 import actions.BasicAuth;
+import com.google.code.siren4j.component.Action;
 import com.google.code.siren4j.component.Entity;
 import com.google.code.siren4j.component.Link;
+import com.google.code.siren4j.component.builder.ActionBuilder;
 import com.google.code.siren4j.component.builder.LinkBuilder;
 import com.google.code.siren4j.converter.ReflectingConverter;
 import com.google.code.siren4j.converter.ResourceConverter;
@@ -25,6 +27,8 @@ public class BaseController extends Controller {
     }
 
     protected String serializeResource(Resource resource) {
+        addGenericControls(resource);
+
         ResourceConverter converter = null;
         try {
             converter = ReflectingConverter.newInstance();
@@ -43,7 +47,20 @@ public class BaseController extends Controller {
                 .setRelationship("users")
                 .setTitle("Users")
                 .build());
+        links.add(LinkBuilder.newInstance()
+                .setHref("/books-search")
+                .setRelationship("search")
+                .setTitle("Search")
+                .build());
         resource.setEntityLinks(links);
+
+        Collection<Action> actions = new ArrayList<Action>();
+        actions.add(ActionBuilder.newInstance()
+        .setHref("/register")
+        .setName("register")
+        .setTitle("Register")
+        .build());
+        resource.setEntityActions(actions);
     }
 
 }

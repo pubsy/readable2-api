@@ -2,8 +2,9 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-# Home page
-GET     /                           @controllers.Books.books()
+# Extract offset and limit parameters from the query string.
+# i.e. http://myserver.com/?offset=0&limit=9
+GET     /                           @controllers.Books.books(offset: Int ?= 0, limit: Int ?= 9)
 
 GET     /login                      @controllers.BaseController.login()
 

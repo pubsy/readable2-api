@@ -3,7 +3,6 @@ package controllers;
 import com.google.code.siren4j.resource.CollectionResource;
 import play.mvc.Result;
 import resources.BookResource;
-import resources.BooksListResource;
 import services.BooksService;
 
 import javax.inject.Inject;
@@ -11,29 +10,27 @@ import java.util.List;
 
 public class Books extends BaseController {
 
-    @Inject
     private BooksService booksService;
 
-    public Result books() {
-        BooksListResource booksListResource = new BooksListResource();
-        booksListResource.books = new CollectionResource<BookResource>();
-        booksListResource.books.setItems(getBooksList(0, 9));
-        booksListResource.books.setLimit(9);
-        booksListResource.books.setOffset(0);
-        booksListResource.books.setTotal(getBooksTotal());
+    public Result books(int offset, int limit) {
+        CollectionResource<BookResource> books = new CollectionResource<BookResource>();
+        books.setItems(getBooksList(offset, limit));
+        books.setLimit(limit);
+        books.setOffset(offset);
+        books.setTotal(getBooksTotal());
 
-        addGenericControls(booksListResource);
-        return ok(serializeResource(booksListResource)).as("application/vnd.siren+json");
+        return ok(serializeResource(books)).as("application/vnd.siren+json");
     }
 
-    private List<BookResource> getBooksList(int limit, int offset) {
-        return booksService.getBooksList(limit, offset);
+    private List<BookResource> getBooksList(int offset, int limit) {
+        return booksService.getBooksList(offset, limit);
     }
 
     private long getBooksTotal() {
         return booksService.getBooksTotal();
     }
 
+    @Inject
     public void setBooksService(BooksService booksService){
         this.booksService  = booksService;
     }
