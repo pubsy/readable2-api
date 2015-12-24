@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 public class BaseModel extends Model {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long id;
 	
 	@NotNull
