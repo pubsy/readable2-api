@@ -11,6 +11,7 @@ libraryDependencies ++= Seq(
   javaJdbc,
   cache,
   javaWs,
+  filters,
   "junit" % "junit" % "4.12" % "test",
   "org.mockito" % "mockito-core" % "1.8.5" % "test",
   "com.googlecode.siren4j" % "siren4j" % "1.1.3",
