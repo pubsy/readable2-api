@@ -8,7 +8,7 @@ import services.BooksService;
 import javax.inject.Inject;
 import java.util.List;
 
-public class Books extends BaseController {
+public class BooksController extends BaseController {
 
     private BooksService booksService;
 

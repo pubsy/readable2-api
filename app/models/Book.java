@@ -38,8 +38,4 @@ public class Book extends BaseModel {
 	public Book(){
 	}
 
-	public static Finder<String,Book> find = new Finder<String,Book>(
-			Book.class
-	);
-
 }

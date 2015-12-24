@@ -1,11 +1,14 @@
+package controllers;
+
 import org.junit.Test;
 import play.libs.Json;
 import play.libs.ws.WS;
 import play.test.WithServer;
 
+import static junit.framework.TestCase.fail;
 import static org.junit.Assert.assertEquals;
 
-public class BooksRoutesTest extends WithServer {
+public class BooksControllerTest extends WithServer {
 
     @Test
     public void testBooksListOffset() {

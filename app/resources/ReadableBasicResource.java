@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public final class ReadableBasicResource {
 //
 //
-//    //@Link(rel = "books navigation", title = "Books")
+//    //@Link(rel = "books navigation", title = "BooksController")
 //    public String books = "/";
 //
 //    //@Link(rel = "users navigation", title = "Users")

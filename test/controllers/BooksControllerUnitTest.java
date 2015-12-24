@@ -1,19 +1,14 @@
+package controllers;
+
 import com.fasterxml.jackson.databind.JsonNode;
-import com.google.common.collect.ImmutableMap;
-import controllers.Books;
 import models.Book;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.runners.MockitoJUnitRunner;
 import play.libs.Json;
 import play.mvc.Result;
-import play.test.FakeApplication;
-import play.test.Helpers;
-import play.test.WithApplication;
 import resources.BookResource;
 import services.BooksService;
 
@@ -25,54 +20,45 @@ import java.util.stream.StreamSupport;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static play.mvc.Http.Status.OK;
 import static play.test.Helpers.contentAsString;
 
-@RunWith(MockitoJUnitRunner.class)
-public class BooksControllerTest extends WithApplication {
+public class BooksControllerUnitTest {
 
     @Mock
     private BooksService booksService;
 
     @InjectMocks
-    private Books books = new Books();
+    private BooksController booksController = new BooksController();
 
     @Before
     public void before() {
         MockitoAnnotations.initMocks(this);
     }
 
-    @Override
-    protected FakeApplication provideFakeApplication() {
-        return new FakeApplication(new java.io.File("."), Helpers.class.getClassLoader(),
-                ImmutableMap.of("play.http.router", "router.Routes"), new ArrayList<String>(), null);
-    }
-
     @Test
     public void testBooksListContentType() {
-        Result result = books.books(0, 3);
+        Result result = booksController.books(0, 3);
         assertEquals(OK, result.status());
         assertEquals("application/vnd.siren+json", result.contentType());
     }
 
     @Test
     public void testBooksListContainsLinks() {
-        assertLinksPresent(books.books(0, 3), "search", "users");
+        assertLinksPresent(booksController.books(0, 3), "search", "users");
     }
 
     @Test
     public void testBooksListContainsActions() {
-        assertActionsPresent(books.books(0, 3), "register");
+        assertActionsPresent(booksController.books(0, 3), "register");
     }
 
     @Test
     public void testBooksListSize() {
         prepareBooksService(0, 3, 7);
 
-        int actualSize = Json.parse(contentAsString(books.books(0, 3))).get("properties").get("size").intValue();
+        int actualSize = Json.parse(contentAsString(booksController.books(0, 3))).get("properties").get("size").intValue();
 
         assertEquals(3, actualSize);
     }
@@ -81,7 +67,7 @@ public class BooksControllerTest extends WithApplication {
     public void testBooksListTotal() {
         prepareBooksService(0, 3, 7);
 
-        long actualTotal = Json.parse(contentAsString(books.books(0, 3))).get("properties").get("total").longValue();
+        long actualTotal = Json.parse(contentAsString(booksController.books(0, 3))).get("properties").get("total").longValue();
 
         assertEquals(7, actualTotal);
     }
@@ -90,7 +76,7 @@ public class BooksControllerTest extends WithApplication {
     public void testBooksListOffset() {
         prepareBooksService(2, 3, 7);
 
-        int actualTotal = Json.parse(contentAsString(books.books(2, 3))).get("properties").get("offset").intValue();
+        int actualTotal = Json.parse(contentAsString(booksController.books(2, 3))).get("properties").get("offset").intValue();
 
         assertEquals(2, actualTotal);
     }
@@ -99,7 +85,7 @@ public class BooksControllerTest extends WithApplication {
     public void testBooksListLimit() {
         prepareBooksService(0, 5, 7);
 
-        int actualTotal = Json.parse(contentAsString(books.books(0, 5))).get("properties").get("limit").intValue();
+        int actualTotal = Json.parse(contentAsString(booksController.books(0, 5))).get("properties").get("limit").intValue();
 
         assertEquals(5, actualTotal);
     }
@@ -108,7 +94,7 @@ public class BooksControllerTest extends WithApplication {
     public void testBooksListItemsSize() {
         prepareBooksService(3, 6, 9);
 
-        int actualSize = Json.parse(contentAsString(books.books(3, 6))).get("entities").size();
+        int actualSize = Json.parse(contentAsString(booksController.books(3, 6))).get("entities").size();
 
         assertEquals(6, actualSize);
     }
@@ -117,7 +103,7 @@ public class BooksControllerTest extends WithApplication {
     public void testBooksServiceCall(){
         prepareBooksService(3, 6, 9);
 
-        books.books(3, 6);
+        booksController.books(3, 6);
 
         verify(booksService, times(1)).getBooksList(3, 6);
         verify(booksService, times(1)).getBooksTotal();
@@ -127,7 +113,7 @@ public class BooksControllerTest extends WithApplication {
     public void testBooksListItemsClass() {
         prepareBooksService(0, 3, 9);
 
-        String entityItemClass = Json.parse(contentAsString(books.books(0, 3))).get("entities").get(0).get("class").get(0).asText();
+        String entityItemClass = Json.parse(contentAsString(booksController.books(0, 3))).get("entities").get(0).get("class").get(0).asText();
 
         assertEquals("book", entityItemClass);
     }

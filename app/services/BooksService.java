@@ -1,5 +1,6 @@
 package services;
 
+import com.avaje.ebean.Model;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import models.Book;
@@ -8,10 +9,11 @@ import resources.BookResource;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by acidum on 12/14/15.
- */
 public class BooksService {
+
+    public static Model.Finder<String,Book> find = new Model.Finder<String,Book>(
+            Book.class
+    );
 
     private Function<Book, BookResource> booksToResources =
             new Function<Book, BookResource>() {
@@ -21,19 +23,24 @@ public class BooksService {
             };
 
     public List<BookResource> getBooksList(int offset, int limit) {
-        //Book.find("order by insertedAt asc").fetch(page + 1, size);
+        List<Book> books = find
+                .setFirstRow(offset)
+                .setMaxRows(limit)
+                .orderBy("insertedAt asc")
+                .findList();
 
-        List<Book> books = new ArrayList<Book>();
-        Book book = new Book();
-        book.title = "bla";
-        book.description = "sososo";
-        book.externalId = "ext123";
-        books.add(book);
+        return Lists.transform(books, booksToResources);
+    }
 
-        return Lists.transform(books, booksToResources);//Book.find.all();
+    public BookResource getBook(String externalId) {
+        Book book = find.where().eq("externalId", externalId).findUnique();
+        if(book == null){
+            return null;
+        }
+        return new BookResource(book);
     }
 
     public int getBooksTotal() {
-        return Book.find.findRowCount();
+        return find.findRowCount();
     }
 }

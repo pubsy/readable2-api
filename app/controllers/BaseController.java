@@ -16,9 +16,6 @@ import play.mvc.Result;
 import java.util.ArrayList;
 import java.util.Collection;
 
-/**
- * Created by acidum on 12/14/15.
- */
 public class BaseController extends Controller {
 
     @BasicAuth
